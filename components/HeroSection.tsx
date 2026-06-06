@@ -36,10 +36,27 @@ export default function HeroSection() {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
+
+    // webkit-playsinline is required for older iOS Safari and can only be set via setAttribute
+    video.setAttribute('webkit-playsinline', '')
+    video.setAttribute('x-webkit-airplay', 'allow')
     video.muted = true
-    video.play().catch(() => {
-      // autoplay blocked — static fallback background remains visible
-    })
+    video.playsInline = true
+
+    const tryPlay = () => {
+      video.play().catch(() => {})
+    }
+
+    tryPlay()
+
+    // iOS blocks autoplay until first user gesture — retry on touch/click
+    document.addEventListener('touchstart', tryPlay, { once: true, passive: true })
+    document.addEventListener('click', tryPlay, { once: true })
+
+    return () => {
+      document.removeEventListener('touchstart', tryPlay)
+      document.removeEventListener('click', tryPlay)
+    }
   }, [])
 
   return (
@@ -55,6 +72,7 @@ export default function HeroSection() {
         muted
         loop
         playsInline
+        preload="auto"
         disablePictureInPicture
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover"
