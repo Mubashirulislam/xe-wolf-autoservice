@@ -157,10 +157,10 @@ export default function HomePage() {
               Unser Konzept
             </h2>
           </SectionReveal>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-[#1e1e1e]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 divide-y xl:divide-y-0 xl:divide-x divide-[#1e1e1e]">
             {whyItems.map((item, i) => (
               <SectionReveal key={item.title} delay={i * 0.1}>
-                <div className="why-card pt-6 pb-8 px-8 first:pl-0 last:pr-0">
+                <div className="why-card pt-6 pb-8 px-8 sm:first:pl-0 sm:last:pr-0 xl:first:pl-0 xl:last:pr-0">
                   <p
                     className="font-display font-black mb-4 select-none"
                     style={{ fontSize: '52px', color: 'var(--red)', lineHeight: 1 }}
