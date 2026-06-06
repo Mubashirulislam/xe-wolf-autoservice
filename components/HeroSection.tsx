@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 
 const containerVariants = {
   hidden: {},
@@ -30,19 +31,31 @@ const statVariants = {
 
 export default function HeroSection() {
   const reduce = useReducedMotion()
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    video.muted = true
+    video.play().catch(() => {
+      // autoplay blocked — static fallback background remains visible
+    })
+  }, [])
 
   return (
     <section
       className="relative w-full overflow-hidden"
-      style={{ minHeight: '100dvh' }}
+      style={{ minHeight: '100dvh', background: '#0e0e0e' }}
       aria-label="Willkommen bei XE-Autoservice Wolf"
     >
       {/* Video background */}
       <video
+        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
+        disablePictureInPicture
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover"
         style={{ zIndex: 0 }}
